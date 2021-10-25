@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--缩放动画
+    android:duration="500"  动画时长
+    android:fromXScale="0.0"    动画开始X轴拉伸
+    android:fromYScale="0.0"    动画开始Y轴拉伸
+    android:pivotX="50%"    相对于自己的X坐标占比
+    android:pivotY="50%"    相对于自己的Y坐标占比
+    android:toXScale="1.0"  动画结束X轴拉伸
+    android:toYScale="1.0"  动画结束X轴拉伸
+-->
+<scale xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="300"
+    android:fromXScale="0.0"
+    android:fromYScale="0.0"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:toXScale="1.0"
+    android:toYScale="1.0"/>

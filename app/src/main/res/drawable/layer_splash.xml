@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape >
+            <solid android:color="@color/white"/>
+        </shape>
+    </item>
+    <item>
+        <bitmap
+            android:src="@drawable/button_logo"
+            android:gravity="fill"/>
+    </item>
+    <item android:bottom="100dp">
+        <bitmap
+            android:src="@drawable/splash"
+            android:gravity="fill"/>
+    </item>
+
+
+</layer-list>

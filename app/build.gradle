@@ -1,0 +1,147 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.aige.loveproduction_tablet"
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //******************************************************************
+        //声明多渠道打包风味维度
+        flavorDimensions "channel"
+        //buildConfigField 'String','SERVER',getSERVER('debug')
+        vectorDrawables.useSupportLibrary = true
+        //X5兼容64位手机
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+//打包签名
+    signingConfigs {
+        release {
+            keyAlias 'key0'
+            keyPassword 'zwk.2020452796'
+            storeFile file('../app/src/main/filters/sign/loveproduction.jks')
+            storePassword 'zwk.2020452796'
+        }
+        debug {
+            keyAlias 'key0'
+            keyPassword 'zwk.2020452796'
+            storeFile file('../app/src/main/filters/sign/loveproduction.jks')
+            storePassword 'zwk.2020452796'
+        }
+    }
+    buildTypes {
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //为BuildConfig.class文件添加新属性
+            buildConfigField 'String','SERVER',getSERVER('debug')
+            signingConfig signingConfigs.release
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField 'String','SERVER',getSERVER('release')
+            signingConfig signingConfigs.release
+        }
+    }
+    //打包后app名称
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                outputFileName = "LoveProduction_Tablet-${variant.name}-v${variant.versionName}.apk"
+            }
+    }
+
+    //多渠道打包
+    productFlavors {
+        xiaomi{
+            //为BuildConfig.class文件添加新属性
+            buildConfigField 'String','PLATE_FROM','"xiaomi"'
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE:"xiaomi"]
+            dimension "channel"
+        }
+        yingyongbao{
+            buildConfigField 'String','PLATE_FROM','"yingyongbao"'
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE:"yingyongbao"]
+            dimension "channel"
+        }
+    }
+
+
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    //获取二维码扫描
+    implementation('cn.yipianfengye.android:zxing-library:2.2')
+    //implementation('com.journeyapps:zxing-android-embedded:3.5.0')
+
+    //okhttp3
+    implementation 'com.squareup.okhttp3:okhttp:4.2.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:3.10.0"
+    /**
+     * Retrofit+RxJava+Gson，RxJava和Gson都自带Retrofit，所以只需要引入RxJava和Gson即可
+     */
+    //Gson用于对请求返回的数据与实体Bean解析，由原本Call<ResponseBody>只能返回ResponseBody变成Call<Bean>
+    //只要构建与返回数据一一对应的Bean类就可自动转换成相应的Bean对象
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    //RxJava用于对请求返回的数据进行封装，由原Call<ResponseBody>格式可装换为入Observable<ResponseBody>多种格式的返回数据
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    //运行时权限
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+
+
+    //AutoDispose解决RxJava内存泄漏
+    implementation 'com.uber.autodispose2:autodispose:2.0.0'
+    implementation 'com.uber.autodispose2:autodispose-android:2.0.0'
+    implementation 'com.uber.autodispose2:autodispose-lifecycle:2.0.0'
+    implementation 'com.uber.autodispose2:autodispose-androidx-lifecycle:2.0.0'
+
+    //注解库，可限定一些变量、方法参数或者是方法返回值的范围，比如@IdRes只能填入R.id.?的值
+    implementation 'com.android.support:support-annotations:28.0.0'
+
+    //权限请求框架
+    implementation 'com.github.hotchemi:permissionsdispatcher:2.3.1'
+    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
+
+    //lottie动画框架，可使用json文件播放动画
+    implementation 'com.airbnb.android:lottie:3.4.1'
+
+    //腾讯SDK
+    api 'com.tencent.tbs:tbssdk:44085'
+}
+//定义方法根据环境获取域名
+def getSERVER(String str) {
+    def SERVER = null
+    Properties properties = new Properties()
+    def proFile = file("src/main/filters/"+str+"/config.properties")
+    if(proFile.canRead()) {
+        properties.load(new FileInputStream(proFile))
+        if(properties != null) {
+            SERVER = properties['SERVER']
+        }
+    }
+    return SERVER
+}

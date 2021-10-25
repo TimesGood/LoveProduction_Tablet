@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--标题主题-->
+<resources>
+    <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="actionMenuTextColor">@color/white</item> <!--颜色-->
+        <item name="android:textSize">14sp</item> <!--字体大小-->
+        <item name="android:paddingRight">10dp</item>
+    </style>
+</resources>

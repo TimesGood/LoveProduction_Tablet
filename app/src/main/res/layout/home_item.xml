@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnCount="15"
+    android:orientation="horizontal"
+    android:background="@drawable/shape_while_grey_stroke">
+    <TextView
+        android:id="@+id/sales_order_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="销售单号" />
+
+    <TextView
+        android:id="@+id/contract_order_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="合同号" />
+
+    <TextView
+        android:id="@+id/cabinet_count_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="柜数" />
+
+    <TextView
+        android:id="@+id/client_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="客户" />
+
+    <TextView
+        android:id="@+id/phone_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="电话" />
+
+    <TextView
+        android:id="@+id/address_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="地址" />
+
+    <TextView
+        android:id="@+id/order_type_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="订单类型" />
+
+    <TextView
+        android:id="@+id/dealer_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="经销商" />
+
+    <TextView
+        android:id="@+id/orders_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="下单日期" />
+
+    <TextView
+        android:id="@+id/audit_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="审核日期" />
+
+    <TextView
+        android:id="@+id/quote_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="报价日期" />
+
+    <TextView
+        android:id="@+id/finance_pass_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="财务通过日期" />
+
+    <TextView
+        android:id="@+id/in_storage_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="入库日期" />
+
+    <TextView
+        android:id="@+id/out_storage_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="出库日期" />
+
+    <TextView
+        android:id="@+id/send_out_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="发货日期" />
+</GridLayout>
+
+

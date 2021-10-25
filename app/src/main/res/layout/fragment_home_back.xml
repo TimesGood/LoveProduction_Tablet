@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.aige.loveproduction_tablet.customui.viewgroup.FlowLayout
+                android:id="@+id/flow_layout"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_weight="0.3">
+                <EditText
+                    android:id="@+id/sales_order_edit"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:hint="销售单号"
+                    android:autofillHints="true"
+                    android:inputType="text"
+                    android:padding="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/shape_while_grey_stroke"/>
+                <EditText
+                    android:id="@+id/contract_order_edit"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:hint="合同号"
+                    android:autofillHints="true"
+                    android:inputType="text"
+                    android:padding="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toEndOf="@+id/sales_order_edit"
+                    android:background="@drawable/shape_while_grey_stroke"/>
+                <EditText
+                    android:id="@+id/dealer_edit"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:hint="经销商"
+                    android:autofillHints="true"
+                    android:inputType="text"
+                    android:padding="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_below="@+id/sales_order_edit"
+                    android:background="@drawable/shape_while_grey_stroke"/>
+                <EditText
+                    android:id="@+id/audit_date"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:hint="审核日期"
+                    android:autofillHints="true"
+                    android:inputType="text"
+                    android:padding="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/dealer_edit"
+                    android:background="@drawable/shape_while_grey_stroke"/>
+            </com.aige.loveproduction_tablet.customui.viewgroup.FlowLayout>
+
+            <Button
+                android:id="@+id/find_btn"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/button_shape_selector"
+                android:layout_weight="1"
+                android:text="搜索" />
+        </LinearLayout>
+        <include layout="@layout/home_item"/>
+    </LinearLayout>
+
+
+
+</FrameLayout>

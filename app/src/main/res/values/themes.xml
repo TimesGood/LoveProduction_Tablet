@@ -1,0 +1,35 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.LoveProduction_Tablet" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryVariant">@color/blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+<!--    启动欢迎页-->
+    <style name="SplashAppTheme" parent="Theme.LoveProduction_Tablet">
+
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">false
+        </item><!--沉浸透明状态栏  可选，窗口是否是半透明，设置状态栏的效果，这个值也会影响状态效果-->
+        <item name="android:windowDisablePreview">false
+        </item><!--冷启动是用到的属性，窗口不可见时的预览图，为true时点击app图标会慢一会-->
+        <item name="android:windowBackground">@drawable/layer_splash</item><!--替换启动白屏的图片-->
+        <!-- <item name="android:windowBackground">@mipmap/ic_splash_logo</item>--><!--替换启动白屏的图片-->
+        <!-- 在5.0后，增加了一个windowDrawsSystemBarBackgrounds属性，用来标志此窗口是否负责绘制系统栏背景，
+我们把它设成false，这样当它绘制windowBackground的时候，就会在NavigationBar之上。-->
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:windowTranslucentStatus">true</item><!--这行代码使布局占据状态栏空间-->
+    </style>
+</resources>
