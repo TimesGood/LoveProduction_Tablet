@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:paddingTop="20dp">
 
-        <com.aige.loveproduction_tablet.customui.SmartTextView
+        <com.aige.loveproduction_tablet.mvp.ui.customui.view.SmartTextView
             android:id="@+id/tv_ui_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.aige.loveproduction_tablet.customui.SmartTextView
+            <com.aige.loveproduction_tablet.mvp.ui.customui.view.SmartTextView
                 android:id="@+id/tv_ui_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

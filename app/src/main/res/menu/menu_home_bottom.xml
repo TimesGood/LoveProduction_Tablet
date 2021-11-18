@@ -8,6 +8,11 @@
         android:title="主页"
         app:showAsAction="never"/>
     <item
+        android:id="@+id/apply"
+        android:icon="@drawable/apply_img"
+        android:title="图形渲染"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/user"
         android:icon="@drawable/user_image_off"
         android:title="个人中心"

@@ -1,7 +1,7 @@
 package com.aige.loveproduction_tablet.mvp.model;
 
 import com.aige.loveproduction_tablet.base.IBaseModel;
-import com.aige.loveproduction_tablet.bean.BaseBean;
+import com.aige.loveproduction_tablet.base.BaseBean;
 import com.aige.loveproduction_tablet.bean.UserBean;
 import com.aige.loveproduction_tablet.mvp.contract.LoginContract;
 import com.google.gson.Gson;

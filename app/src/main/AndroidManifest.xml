@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aige.loveproduction_tablet">
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 网络请求 -->
     <uses-permission android:name="android.permission.CAMERA" /> <!-- 获取手机摄像头的权限 -->
@@ -9,23 +10,23 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 读取外部文件权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 写入外部文件权限 -->
-    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <!--Android11 读取/storage/emulated/0/需要权限WRITE_EXTERNAL_STORAGE、READ_EXTERNAL_STORAGE
-    还需额外在application添加属性android:requestLegacyExternalStorage="true"-->
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.LoveProduction_Tablet"
-        android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true">
-        <!--赋予用户可访问的空间设置-->
+        android:usesCleartextTraffic="true">
+        <activity android:name=".mvp.ui.activity.ApplyActivity"
+            android:screenOrientation="landscape"></activity>
+        <!-- 赋予用户可访问的空间设置 -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -35,11 +36,15 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-        <activity android:name=".mvp.ui.activity.MainActivity" android:windowSoftInputMode="adjustPan">
 
-        </activity>
-        <activity android:name=".mvp.ui.activity.TBSFileViewActivity" />
-        <activity android:name=".mvp.ui.activity.SplashActivity"
+        <activity
+            android:name=".mvp.ui.activity.MainActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".mvp.ui.activity.SplashActivity"
+            android:screenOrientation="landscape"
             android:theme="@style/SplashAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,14 +52,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.ui.activity.LoginActivity" android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".mvp.ui.activity.CustomCaptureActivity" />
-
+        <activity
+            android:name=".mvp.ui.activity.LoginActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" /> <!-- 二维码扫描 -->
+        <!-- <activity android:name=".mvp.ui.activity.CustomCaptureActivity" -->
+        <!-- android:screenOrientation="landscape"/> -->
+        <activity
+            android:name=".mvp.ui.activity.QrCodeActivity"
+            android:screenOrientation="landscape" /> <!-- 腾讯服务 -->
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
             android:label="dexopt"
-            android:process=":dexopt" >
-        </service>
+            android:process=":dexopt"></service>
     </application>
 
 </manifest>

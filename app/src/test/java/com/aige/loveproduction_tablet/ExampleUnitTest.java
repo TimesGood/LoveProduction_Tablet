@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.webkit.MimeTypeMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -19,14 +21,12 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        List<String> list = new ArrayList<>();
-        String[] s1 = new String[]{"1","2","3","4"};
-        String[] s2 = new String[]{"5","6","7"};
-        list.toArray(s1);
-        list.toArray(s2);
-        for (String s : list) {
-            System.out.println("*****************************");
-            System.out.println(s);
+        String json = " {gg:\"ffff\",ff:\"ff\"}";
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            System.out.println(jsonObject.get("gg"));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

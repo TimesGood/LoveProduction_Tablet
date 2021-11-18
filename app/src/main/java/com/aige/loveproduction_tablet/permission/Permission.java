@@ -7,7 +7,8 @@ import android.os.Build;
 
 import androidx.core.content.ContextCompat;
 
-import com.aige.loveproduction_tablet.dialog.MessageDialog;
+
+import com.aige.loveproduction_tablet.mvp.ui.dialog.MessageDialog;
 import com.aige.loveproduction_tablet.util.IntentUtils;
 
 import java.util.ArrayList;
@@ -18,45 +19,46 @@ import java.util.List;
  */
 public class Permission {
     private List<String> mList;
+    private Activity mActivity;
 
-    public Permission() {
+    public Permission(Activity activity) {
         this.mList = new ArrayList<>();
+        mActivity = activity;
     }
 
     /**
      * 获取权限
-     * @param activity
      */
-    public void applyPermission(Activity activity,String[] permission,ApplyListener applyListener){
+    public void applyPermission(String[] permission,ApplyListener applyListener){
         ApplyListener mApplyListener = applyListener;
-        String[] notApplyPermission = getNotApplyPermission(activity, permission);
-        String[] refuse = getRefuse(activity, permission);
+        String[] notApplyPermission = getNotApplyPermission(permission);
+        String[] refuse = getRefuse(permission);
         if(notApplyPermission.length == 0) {
             mApplyListener.applySuccess();
         }else if(refuse.length != 0){
-            new MessageDialog.Builder(activity)
-                        .setTitle("开启权限")
-                        .setMessage("权限未开启，请手动授予" + getPermissionHint(activity,mList))
-                        .setConfirm("去开启")
-                        .setListener(dialog -> IntentUtils.gotoPermission(activity))
-                        .show();
+            new MessageDialog.Builder(mActivity)
+                    .setTitle("开启权限")
+                    .setMessage("权限未开启，请手动授予" + getPermissionHint(mList))
+                    .setConfirm("去开启")
+                    .setListener(dialog -> IntentUtils.gotoPermission(mActivity))
+                    .show();
         }else{
             mApplyListener.apply(notApplyPermission);
         }
     }
     //获取未授权的权限
-    public String[] getNotApplyPermission(Activity activity,String[] permission) {
+    public String[] getNotApplyPermission(String[] permission) {
         mList.clear();
         for (String p:permission) {
-            if(!(ContextCompat.checkSelfPermission(activity, p) == PackageManager.PERMISSION_GRANTED)) mList.add(p);
+            if(!(ContextCompat.checkSelfPermission(mActivity, p) == PackageManager.PERMISSION_GRANTED)) mList.add(p);
         }
         return mList.toArray(new String[]{});
     }
     //获取被拒绝的权限
-    public String[] getRefuse(Activity activity,String[] permission) {
+    public String[] getRefuse(String[] permission) {
         mList.clear();
         for (String p : permission) {
-            if(activity.shouldShowRequestPermissionRationale(p)) mList.add(p);
+            if(mActivity.shouldShowRequestPermissionRationale(p)) mList.add(p);
         }
         return mList.toArray(new String[]{});
     }
@@ -68,11 +70,10 @@ public class Permission {
 
     /**
      * 获取权限失败时得到相应权限的消息
-     * @param context 上下文
      * @param permissions 权限组
      * @return 消息
      */
-    public String getPermissionHint(Context context, List<String> permissions) {
+    public String getPermissionHint(List<String> permissions) {
         if (permissions == null || permissions.isEmpty()) {
             return "获取权限失败，请手动授予权限";
         }

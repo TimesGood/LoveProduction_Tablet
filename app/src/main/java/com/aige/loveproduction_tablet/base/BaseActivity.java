@@ -20,6 +20,7 @@ import com.aige.loveproduction_tablet.action.ActivityAction;
 import com.aige.loveproduction_tablet.action.ClickAction;
 import com.aige.loveproduction_tablet.action.KeyboardAction;
 import com.aige.loveproduction_tablet.action.TitleBarAction;
+import com.aige.loveproduction_tablet.permission.Permission;
 import com.aige.loveproduction_tablet.util.SoundUtils;
 
 import autodispose2.AutoDispose;
@@ -34,13 +35,15 @@ public abstract class BaseActivity<P extends BasePresenter,V extends IBaseView> 
         implements IBaseView, ActivityAction, ClickAction , KeyboardAction , TitleBarAction {
     protected P mPresenter;
     protected SoundUtils soundUtils;
+    protected Permission permission;
     private Toolbar toolbar;
     private Toast toast;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //锁定竖屏
-        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //锁定横屏
+        //setRequestedOrientation(ActivityInfo .SCREEN_ORIENTATION_LANDSCAPE);// 横屏
         //创建相应的P层对象
         mPresenter = createPresenter();
         //绑定V层
@@ -63,6 +66,7 @@ public abstract class BaseActivity<P extends BasePresenter,V extends IBaseView> 
      */
     public void initToolbar() {
         toolbar = findViewById(R.id.toolbar);
+        if(toolbar == null) return;
         hideTitle();
         setCenterTitle("居中标题");
         toolbar.setBackground(ContextCompat.getDrawable(this,R.color.blue));
@@ -102,7 +106,9 @@ public abstract class BaseActivity<P extends BasePresenter,V extends IBaseView> 
         soundUtils = new SoundUtils(this,SoundUtils.MEDIA_SOUND);
         soundUtils.putSound(0,R.raw.ok);
         soundUtils.putSound(1,R.raw.no);
+        if(permission == null) permission = new Permission(this);
     }
+
 
     /**
      * 初始化视图
@@ -148,6 +154,7 @@ public abstract class BaseActivity<P extends BasePresenter,V extends IBaseView> 
         if (mPresenter != null) {
             mPresenter.onDetach();
         }
+        if(permission != null) permission = null;
     }
     /**
      * 绑定生命周期 防止MVP内存泄漏

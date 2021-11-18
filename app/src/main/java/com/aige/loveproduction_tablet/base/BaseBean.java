@@ -1,4 +1,4 @@
-package com.aige.loveproduction_tablet.bean;
+package com.aige.loveproduction_tablet.base;
 
 public class BaseBean<T> {
     private int code;

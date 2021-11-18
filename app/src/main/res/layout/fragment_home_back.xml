@@ -10,7 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <com.aige.loveproduction_tablet.customui.viewgroup.FlowLayout
+            <com.aige.loveproduction_tablet.mvp.ui.customui.viewgroup.FlowLayout
                 android:id="@+id/flow_layout"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
@@ -59,7 +59,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/dealer_edit"
                     android:background="@drawable/shape_while_grey_stroke"/>
-            </com.aige.loveproduction_tablet.customui.viewgroup.FlowLayout>
+            </com.aige.loveproduction_tablet.mvp.ui.customui.viewgroup.FlowLayout>
 
             <Button
                 android:id="@+id/find_btn"

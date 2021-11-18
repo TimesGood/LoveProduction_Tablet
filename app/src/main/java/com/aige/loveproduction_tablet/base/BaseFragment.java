@@ -16,6 +16,7 @@ import androidx.lifecycle.Lifecycle;
 
 import com.aige.loveproduction_tablet.action.ActivityAction;
 import com.aige.loveproduction_tablet.action.ClickAction;
+import com.aige.loveproduction_tablet.permission.Permission;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +29,7 @@ public abstract class BaseFragment<P extends BasePresenter,V extends IBaseView> 
     protected View view;
     protected Activity mActivity;
     protected Toast toast;
+    protected Permission permission;
     @Override
     public void onAttach(@NonNull @NotNull Context context) {
         super.onAttach(context);
@@ -43,6 +45,7 @@ public abstract class BaseFragment<P extends BasePresenter,V extends IBaseView> 
         mPresenter = createPresenter();
         mPresenter.onAttach((V) this);
         initView(view);
+        initSDK();
         return view;
     }
 
@@ -65,6 +68,9 @@ public abstract class BaseFragment<P extends BasePresenter,V extends IBaseView> 
      * @param view Layout对象
      */
     protected abstract void initView(View view);
+    protected void initSDK() {
+        if(permission == null) permission = new Permission(mActivity);
+    }
     /**
      * 创建对应的P层实体对象
      * @return new Presenter实体对象
@@ -77,6 +83,7 @@ public abstract class BaseFragment<P extends BasePresenter,V extends IBaseView> 
             mPresenter.onDetach();
             mActivity = null;
         }
+        if(permission != null) permission = null;
     }
     /**
      * 销毁当前 Fragment 所在的 Activity

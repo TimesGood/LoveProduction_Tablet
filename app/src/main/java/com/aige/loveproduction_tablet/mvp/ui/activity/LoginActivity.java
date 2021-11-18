@@ -13,9 +13,9 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.aige.loveproduction_tablet.R;
-import com.aige.loveproduction_tablet.animation.BaseAnimation;
+import com.aige.loveproduction_tablet.base.BaseAnimation;
 import com.aige.loveproduction_tablet.base.BaseActivity;
-import com.aige.loveproduction_tablet.bean.BaseBean;
+import com.aige.loveproduction_tablet.base.BaseBean;
 import com.aige.loveproduction_tablet.bean.UserBean;
 import com.aige.loveproduction_tablet.mvp.contract.LoginContract;
 import com.aige.loveproduction_tablet.mvp.presenter.LoginPresenter;

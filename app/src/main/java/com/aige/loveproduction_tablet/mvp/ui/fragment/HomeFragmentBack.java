@@ -10,8 +10,8 @@ import com.aige.loveproduction_tablet.R;
 import com.aige.loveproduction_tablet.base.BaseFragment;
 
 import com.aige.loveproduction_tablet.mvp.contract.HomeContractBack;
-import com.aige.loveproduction_tablet.customui.viewgroup.FlowLayout;
-import com.aige.loveproduction_tablet.dialog.DateDialog;
+import com.aige.loveproduction_tablet.mvp.ui.customui.viewgroup.FlowLayout;
+import com.aige.loveproduction_tablet.mvp.ui.dialog.DateDialog;
 import com.aige.loveproduction_tablet.mvp.presenter.HomePresenterBack;
 
 

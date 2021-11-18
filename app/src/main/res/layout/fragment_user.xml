@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.aige.loveproduction_tablet.customui.viewgroup.DampNestedScrollView
+    <com.aige.loveproduction_tablet.mvp.ui.customui.viewgroup.DampNestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -156,8 +156,41 @@
                     android:layout_centerVertical="true"
                     android:src="@drawable/right_arrow" />
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/test_layout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ripple_button_radius">
+
+                <ImageView
+                    android:id="@+id/test_image"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/test_image" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toEndOf="@+id/test_image"
+                    android:text="测试"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+                <ImageView
+                    android:id="@+id/test_to"
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/right_arrow" />
+            </RelativeLayout>
         </LinearLayout>
 
-    </com.aige.loveproduction_tablet.customui.viewgroup.DampNestedScrollView>
+    </com.aige.loveproduction_tablet.mvp.ui.customui.viewgroup.DampNestedScrollView>
 
 </RelativeLayout>

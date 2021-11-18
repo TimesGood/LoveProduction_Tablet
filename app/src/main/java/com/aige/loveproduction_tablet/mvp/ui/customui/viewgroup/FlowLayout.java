@@ -1,4 +1,4 @@
-package com.aige.loveproduction_tablet.customui.viewgroup;
+package com.aige.loveproduction_tablet.mvp.ui.customui.viewgroup;
 
 import android.content.Context;
 import android.content.res.Resources;

@@ -3,7 +3,7 @@ package com.aige.loveproduction_tablet.net;
 
 
 
-import com.aige.loveproduction_tablet.bean.BaseBean;
+import com.aige.loveproduction_tablet.base.BaseBean;
 import com.aige.loveproduction_tablet.bean.DownloadBean;
 import com.aige.loveproduction_tablet.bean.UserBean;
 
@@ -33,8 +33,12 @@ public interface APIService {
 
     //下载
     @Streaming
+    @Headers("Connection:close")
     @GET()
     Observable<ResponseBody> getFile(@Url String url);
+
+    @GET("/api/Paperless/Folder/GetMPRByBarCode")
+    Observable<BaseBean<List<DownloadBean>>> getMPRByBatchNo(@Query("BarCode") String batchNo);
 
 
 }

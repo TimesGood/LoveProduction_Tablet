@@ -95,8 +95,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     //获取二维码扫描
-    implementation('cn.yipianfengye.android:zxing-library:2.2')
-    //implementation('com.journeyapps:zxing-android-embedded:3.5.0')
+    //implementation('cn.yipianfengye.android:zxing-library:2.2')
+    implementation('com.journeyapps:zxing-android-embedded:3.5.0')
 
     //okhttp3
     implementation 'com.squareup.okhttp3:okhttp:4.2.0'

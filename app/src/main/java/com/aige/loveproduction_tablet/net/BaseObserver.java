@@ -2,14 +2,13 @@ package com.aige.loveproduction_tablet.net;
 
 
 
-import com.aige.loveproduction_tablet.bean.BaseBean;
+import com.aige.loveproduction_tablet.base.BaseBean;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
 import retrofit2.HttpException;
 
 /**
@@ -31,7 +30,13 @@ public abstract class BaseObserver<T> implements Observer<BaseBean<T>> {
             onError("请求超时");
         }else if(e instanceof HttpException) {
             HttpException exception = (HttpException) e;
-            if(exception.code() == 500) onError("找不到数据");
+            if(exception.code() == 500) {
+                onError("找不到数据");
+            }else if(exception.code() == 404) {
+                onError("服务器错误");
+            }else{
+                onError(e.getMessage());
+            }
         }else if(e instanceof ConnectException){
             onError("请连接网络后重试");
         }else{

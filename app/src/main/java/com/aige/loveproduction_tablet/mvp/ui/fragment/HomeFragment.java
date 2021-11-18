@@ -1,10 +1,9 @@
 package com.aige.loveproduction_tablet.mvp.ui.fragment;
 
 import android.Manifest;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,24 +19,25 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.aige.loveproduction_tablet.R;
 import com.aige.loveproduction_tablet.base.BaseDialog;
 import com.aige.loveproduction_tablet.base.BaseFragment;
 import com.aige.loveproduction_tablet.bean.DownloadBean;
 import com.aige.loveproduction_tablet.mvp.contract.HomeContract;
-import com.aige.loveproduction_tablet.dialog.LoadingDialog;
-import com.aige.loveproduction_tablet.dialog.MessageDialog;
+import com.aige.loveproduction_tablet.mvp.ui.activity.QrCodeActivity;
+import com.aige.loveproduction_tablet.mvp.ui.dialog.LoadingDialog;
+import com.aige.loveproduction_tablet.mvp.ui.dialog.MessageDialog;
 import com.aige.loveproduction_tablet.listener.DownloadListener;
 import com.aige.loveproduction_tablet.mvp.presenter.HomePresenter;
 import com.aige.loveproduction_tablet.permission.Permission;
 import com.aige.loveproduction_tablet.util.FileViewerUtils;
 import com.aige.loveproduction_tablet.util.IntentUtils;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.TbsReaderView;
-import com.uuzuche.lib_zxing.activity.CaptureActivity;
-import com.uuzuche.lib_zxing.activity.CodeUtils;
-import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -48,7 +48,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 
@@ -66,7 +68,6 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
     //打开文件目录
     private File mFile;
 
-    Permission permission = new Permission();
     private final String[] permission_group = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
@@ -77,7 +78,6 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
 
     @Override
     protected void initView(View view) {
-        ZXingLibrary.initDisplayOpinion(mActivity);
         download_layout = findViewById(R.id.download_layout);
         download_text = findViewById(R.id.download_text);
         download_bar = findViewById(R.id.download_bar);
@@ -97,10 +97,14 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
             }
             return true;
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            left_recyclerview.setNestedScrollingEnabled(true);
+        }
     }
 
     //请求前的操作
     private void requestReady(String orderId) {
+        find_edit.setText("");
         //每一次搜索请求清空之前下载的文件
         FileViewerUtils.deleteDir(new File(mActivity.getExternalCacheDir() + "/DownloadFile"));
         if (orderId.isEmpty()) {
@@ -140,6 +144,7 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
     @Override
     public void onError(String message) {
         showToast(message);
+        dialog.dismiss();
     }
 
     @Override
@@ -170,7 +175,7 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                permission.applyPermission(mActivity, permission_group, new Permission.ApplyListener() {
+                permission.applyPermission( permission_group, new Permission.ApplyListener() {
                     @Override
                     public void apply(String[] permission) {
                         HomeFragment.this.requestPermissions(permission, 1);
@@ -199,8 +204,30 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
                         }
                     }
                 });
-
-
+            }
+        });
+        left_recyclerview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if(mTbsReaderView != null) mTbsReaderView.onStop();
+                //文件展示，与adapter类似
+                mTbsReaderView = new TbsReaderView(mActivity, null);
+                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT
+                );
+                mTbsReaderView.setLayoutParams(layoutParams);
+                right_fragment.addView(mTbsReaderView);
+                TextView v = (TextView) view;
+                mFile = new File(mActivity.getExternalCacheDir() + "/DownloadFile/" + v.getText());
+                if (mFile.exists()) {
+                    fullScreenOpenFile(mFile);
+                } else {
+                    //不存在就下载
+                    DownloadBean downloadBean = mBean.get(position);
+                    mPresenter.getFile(downloadBean.getFileUrl());
+                }
+                return true;
             }
         });
 
@@ -211,30 +238,13 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
     public void onGetFileSuccess(ResponseBody body) {
         FileViewerUtils.createOrExistsDir(FileViewerUtils.getFilePath(mFile));
         //下载监听
-        writeFile2Disk(body, mFile, new DownloadListener() {
+        new Thread(new Runnable() {
             @Override
-            public void onStart() {
-                download_layout.setVisibility(View.VISIBLE);
-                download_text.setText("正在下载文件...");
+            public void run() {
+                writeFile2Disk(body, mFile);
             }
+        }).start();
 
-            @Override
-            public void onProgress(int currentLength) {
-                download_bar.setProgress(currentLength);
-            }
-
-            @Override
-            public void onFinish(File file) {
-                //下载完成并打开文件
-                download_layout.setVisibility(View.GONE);
-                displayFile(file);
-            }
-
-            @Override
-            public void onFailure(String erroInfo) {
-                download_text.setText("文件下载失败");
-            }
-        });
     }
 
     //打开文件显示文件
@@ -263,6 +273,7 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
             mTbsReaderView.openFile(bundle);
             mTbsReaderView.setVisibility(View.VISIBLE);
             errorHandleLayout.setVisibility(View.GONE);
+
         } else {
             //打开失败
             right_fragment.removeView(mTbsReaderView);
@@ -270,18 +281,25 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
             errorHandleLayout.setVisibility(View.VISIBLE);
         }
     }
+    //用Qbsdk打开文件浏览
+    private void fullScreenOpenFile(File file) {
+        HashMap<String,String> map = new HashMap<>();
+        map.put("style", "2");
+        map.put("local", "true");
+        QbSdk.openFileReader(mActivity,file.getAbsolutePath(),map,null);
+    }
 
     //下载文件并显示进度
-    private void writeFile2Disk(ResponseBody response, File file, DownloadListener downloadListener) {
-        downloadListener.onStart();
+    private void writeFile2Disk(ResponseBody response, File file) {
+        //downloadListener.onStart();
         long currentLength = 0;
         OutputStream os = null;
         if (response == null) {
-            downloadListener.onFailure("资源错误！");
+            //downloadListener.onFailure("资源错误！");
             return;
         }
         InputStream is = response.byteStream();
-        //获取流所有长度
+        //获取流总长度
         long totalLength = response.contentLength();
         try {
             os = new FileOutputStream(file);
@@ -290,16 +308,22 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
             while ((len = is.read(buff)) != -1) {
                 os.write(buff, 0, len);
                 currentLength += len;
-                downloadListener.onProgress((int) (100 * currentLength / totalLength));
+                //downloadListener.onProgress((int) (100 * currentLength / totalLength));
                 if ((int) (100 * currentLength / totalLength) == 100) {
-                    downloadListener.onFinish(file);
+                    //downloadListener.onFinish(file);
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayFile(file);
+                        }
+                    });
                 }
             }
         } catch (FileNotFoundException e) {
-            downloadListener.onFailure("未找到文件！");
+            //downloadListener.onFailure("未找到文件！");
             e.printStackTrace();
         } catch (IOException e) {
-            downloadListener.onFailure("IO错误！");
+            //downloadListener.onFailure("IO错误！");
             e.printStackTrace();
         } finally {
             if (os != null) {
@@ -325,7 +349,7 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
         if (id == R.id.find_img) {
             requestReady(find_edit.getText().toString());
         } else if (id == R.id.image_camera) {
-            permission.applyPermission(mActivity, new String[]{Manifest.permission.CAMERA}, new Permission.ApplyListener() {
+            permission.applyPermission(new String[]{Manifest.permission.CAMERA}, new Permission.ApplyListener() {
                 @Override
                 public void apply(String[] permission) {
                     HomeFragment.this.requestPermissions(permission, 1);
@@ -333,8 +357,8 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
 
                 @Override
                 public void applySuccess() {
-                    Intent intent = new Intent(mActivity, CaptureActivity.class);
-                    startActivityForResult(intent, 1);
+                    startFragmentCapture(HomeFragment.this);
+
                 }
             });
         } else if (id == R.id.btn_retry_with_tbs) {
@@ -351,11 +375,11 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startActivity(CaptureActivity.class);
+                startFragmentCapture(this);
             } else {
                 new MessageDialog.Builder(mActivity)
                         .setTitle("温馨提醒")
-                        .setMessage("权限拒绝后某些功能将不能使用，为了使用完整功能请打开"+permission.getPermissionHint(mActivity, Arrays.asList(permissions)))
+                        .setMessage("权限拒绝后某些功能将不能使用，为了使用完整功能请打开"+permission.getPermissionHint(Arrays.asList(permissions)))
                         .setConfirm("去开启")
                         .setListener(dialog -> IntentUtils.gotoPermission(mActivity))
                         .show();
@@ -366,21 +390,18 @@ public class HomeFragment extends BaseFragment<HomePresenter, HomeContract.View>
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            //处理扫描结果（在界面上显示）
-            if (null != data) {
-                Bundle bundle = data.getExtras();
-                if (bundle == null) {
-                    return;
-                }
-                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
-                    String result = bundle.getString(CodeUtils.RESULT_STRING);
-                    requestReady(result);
-                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+            IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (intentResult != null) {
+                if (intentResult.getContents() == null) {
+                    //扫码失败
                     showToast("解析二维码失败");
+                } else {
+                    String result = intentResult.getContents();//返回值
+                    requestReady(result);
                 }
+
             }
-        }
+
     }
 
     @Override

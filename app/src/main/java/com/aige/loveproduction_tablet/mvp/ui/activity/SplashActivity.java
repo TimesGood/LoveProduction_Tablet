@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 
 import com.aige.loveproduction_tablet.R;
-import com.aige.loveproduction_tablet.animation.BaseAnimation;
+import com.aige.loveproduction_tablet.base.BaseAnimation;
 import com.aige.loveproduction_tablet.util.SharedPreferencesUtils;
 
 import java.util.Timer;

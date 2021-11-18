@@ -6,8 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".mvp.ui.activity.MainActivity"
     android:orientation="vertical">
-    <include layout="@layout/title_include"/>
-    <com.aige.loveproduction_tablet.customui.viewgroup.NoScrollViewPager
+<!--    <include layout="@layout/title_include"/>-->
+    <com.aige.loveproduction_tablet.mvp.ui.customui.viewgroup.NoScrollViewPager
         android:id="@+id/main_body"
         android:layout_width="match_parent"
         android:layout_height="0px"

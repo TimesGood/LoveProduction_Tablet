@@ -7,7 +7,6 @@ buildscript {
         }
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.2.2"
@@ -19,9 +18,12 @@ buildscript {
 
 allprojects {
     repositories {
+        //阿里云maven仓库镜像
+        maven{
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
         google()
         mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
     }
 }
 

@@ -1,9 +1,11 @@
-package com.aige.loveproduction_tablet.animation;
+package com.aige.loveproduction_tablet.base;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.view.View;
+
+import com.aige.loveproduction_tablet.animation.AnimationInterpolator;
 
 public class BaseAnimation implements Animator.AnimatorListener{
     private ObjectAnimator animator;

@@ -1,4 +1,4 @@
-package com.aige.loveproduction_tablet.dialog;
+package com.aige.loveproduction_tablet.mvp.ui.dialog;
 
 import android.content.Context;
 import android.view.Gravity;

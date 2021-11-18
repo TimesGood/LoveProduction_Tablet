@@ -16,8 +16,6 @@ import retrofit2.HttpException;
 public abstract class BasePresenter<V extends IBaseView,M extends IBaseModel> implements IBasePresenter<V> {
     protected V mView;
     protected M mModel;
-    //protected Disposable mDisposable;
-
     /**
      * Disposable管理容器
      */

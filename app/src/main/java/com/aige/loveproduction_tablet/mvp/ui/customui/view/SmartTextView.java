@@ -1,4 +1,4 @@
-package com.aige.loveproduction_tablet.customui;
+package com.aige.loveproduction_tablet.mvp.ui.customui.view;
 
 import android.content.Context;
 import android.text.TextUtils;

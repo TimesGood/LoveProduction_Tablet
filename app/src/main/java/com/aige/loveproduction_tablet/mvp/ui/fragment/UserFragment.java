@@ -9,8 +9,9 @@ import android.widget.TextView;
 import com.aige.loveproduction_tablet.R;
 import com.aige.loveproduction_tablet.base.BaseDialog;
 import com.aige.loveproduction_tablet.base.BaseFragment;
-import com.aige.loveproduction_tablet.dialog.DownloadDialog;
-import com.aige.loveproduction_tablet.dialog.MessageDialog;
+import com.aige.loveproduction_tablet.mvp.ui.activity.ApplyActivity;
+import com.aige.loveproduction_tablet.mvp.ui.dialog.DownloadDialog;
+import com.aige.loveproduction_tablet.mvp.ui.dialog.MessageDialog;
 import com.aige.loveproduction_tablet.mvp.contract.UserContract;
 import com.aige.loveproduction_tablet.mvp.presenter.UserPresender;
 import com.aige.loveproduction_tablet.mvp.ui.activity.LoginActivity;
@@ -29,7 +30,8 @@ public class UserFragment extends BaseFragment<UserPresender, UserContract.View>
 
     @Override
     protected void initView(View view) {
-        setOnClickListener(R.id.about_us_layout,R.id.logout_layout,R.id.download_layout);
+        findViewById(R.id.test_layout).setVisibility(View.GONE);
+        setOnClickListener(R.id.about_us_layout,R.id.logout_layout,R.id.download_layout,R.id.test_layout);
         String userName = SharedPreferencesUtils.getValue(mActivity,"loginInfo","userName");
         ((TextView)findViewById(R.id.user_text)).setText(userName);
         try {
@@ -79,6 +81,8 @@ public class UserFragment extends BaseFragment<UserPresender, UserContract.View>
             }else{
                 showToast("已加载X5内核");
             }
+        }else if(id == R.id.test_layout) {
+            startActivity(ApplyActivity.class);
         }
 
     }

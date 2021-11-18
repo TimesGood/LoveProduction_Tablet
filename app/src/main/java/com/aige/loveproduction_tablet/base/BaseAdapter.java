@@ -265,7 +265,7 @@ public abstract class BaseAdapter<VH extends BaseAdapter<?>.ViewHolder>
     private void checkRecyclerViewState() {
         if (mRecyclerView != null) {
             // 必须在 RecyclerView.setAdapter() 之前设置监听
-            throw new IllegalStateException("are you ok?");
+            throw new IllegalStateException("监听事件需在setAdapter()之前设置");
         }
     }
 
